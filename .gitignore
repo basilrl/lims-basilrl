@@ -1,0 +1,55 @@
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Editor/IDE
+.vscode/
+.idea/
+
+# Dependencies
+/vendor/
+/node_modules/
+
+# Envs & keys
+.env
+*.env
+.env.*
+*.key
+*.pem
+
+# Logs & cache
+*.log
+logs/
+
+# Application logs/cache (keep placeholder files)
+storage/*
+!storage/.gitkeep
+application/logs/*
+!application/logs/index.html
+application/cache/*
+!application/cache/index.html
+
+# Uploads and temp files
+public/uploads/
+public/csv/
+public/qrcode/
+upload/
+assets/uploads/
+assets/uploads/thumb/
+public/uploads/exports/
+public/uploads/captcha_images/
+
+# Config files (security-sensitive)
+application/config/constant.php
+application/config/database.php
+application/config/config.php
+
+/application/config/*
+/public/*
+/.htaccess
+/vendor/*
+/system/*
+/upload/*
+/publicold/*
+/assets/uploads/*
+

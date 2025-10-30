@@ -1,0 +1,35 @@
+// Alter by saurabh 25-11-2020
+
+ALTER TABLE `sample_registration` CHANGE `work_id` `work_id` VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL;
+ALTER TABLE `sample_registration` CHANGE `test_completed_on` `test_completed_on` DATETIME NULL COMMENT 'date of completing the test';
+ALTER TABLE `sample_registration` CHANGE `sample_job_id` `sample_job_id` SMALLINT(6) NULL COMMENT 'Job Id';
+ALTER TABLE `sample_registration` CHANGE `ret_retention_location` `ret_retention_location` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT 'location of the retained sample';
+ALTER TABLE `sample_registration` CHANGE `sample_registered_to_lab_id` `sample_registered_to_lab_id` SMALLINT(6) UNSIGNED NULL COMMENT 'id of the lab where the test in progress';
+ALTER TABLE `sample_registration` CHANGE `sample_retain_expirydate` `sample_retain_expirydate` DATETIME NULL;
+ALTER TABLE `sample_registration` CHANGE `sample_name` `sample_name` VARCHAR(45) CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT 'Sample Name';
+ALTER TABLE `sample_registration` CHANGE `no_of_containers` `no_of_containers` INT(11) NULL COMMENT 'No of containers';
+ALTER TABLE `sample_registration` CHANGE `sample_rejected_remarks` `sample_rejected_remarks` VARCHAR(250) CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT 'Rejected remarks';
+ALTER TABLE `sample_registration` CHANGE `report_ready_date` `report_ready_date` DATETIME NULL;
+ALTER TABLE `sample_registration` CHANGE `result_ready_date` `result_ready_date` DATETIME NULL;
+ALTER TABLE `sample_registration` CHANGE `sample_approve_remarks` `sample_approve_remarks` VARCHAR(250) CHARACTER SET utf8 COLLATE utf8_general_ci NULL;
+ALTER TABLE `sample_test` CHANGE `assigned_time` `assigned_time` DATETIME NULL COMMENT 'Assigned TIme';
+ALTER TABLE `sample_test` CHANGE `sample_test_eqip_id` `sample_test_eqip_id` INT(11) NULL COMMENT 'Equipment Id ';
+ALTER TABLE `sample_test` CHANGE `sample_test_calculated_formula` `sample_test_calculated_formula` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT 'Formula for Tests';
+ALTER TABLE `sample_test` CHANGE `sample_test_resultdata` `sample_test_resultdata` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT 'Final Result For Test';
+ALTER TABLE `sample_test` CHANGE `uncertainty_per` `uncertainty_per` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL;
+ALTER TABLE `sample_test` CHANGE `sample_test_test_method_id` `sample_test_test_method_id` INT(11) NULL COMMENT 'Sample Method id';
+ALTER TABLE `sample_test` CHANGE `sample_test_completed_on` `sample_test_completed_on` DATETIME NULL COMMENT 'test completion time';
+ALTER TABLE `sample_test` CHANGE `testing_note` `testing_note` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL;
+ALTER TABLE `sample_test` CHANGE `test_remark` `test_remark` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL;
+ALTER TABLE `sample_test` CHANGE `test_method_deviation` `test_method_deviation` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL;
+ALTER TABLE `sample_test` CHANGE `report_unit` `report_unit` INT(11) NULL;
+ALTER TABLE `sample_test` CHANGE `report_result` `report_result` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL;
+ALTER TABLE `sample_test` CHANGE `test_completed_date` `test_completed_date` DATETIME NULL;
+ALTER TABLE `sample_test` CHANGE `rowchecked` `rowchecked` VARCHAR(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL;
+ALTER TABLE `sample_test` CHANGE `conclusion` `conclusion` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL, CHANGE `test_delay_remark` `test_delay_remark` VARCHAR(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT 'Test Delay Remarks', CHANGE `test_report` `test_report` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL, CHANGE `remarks` `remarks` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL;
+
+//Alter by Ajit
+
+ALTER TABLE `mst_sample_types` CHANGE `created_on` `created_on` DATETIME NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Created On ';
+
+CREATE TABLE `mst_sample_types_log` ( `mst_sample_types_log_id` INT NOT NULL AUTO_INCREMENT , `sample_type_id` VARCHAR(55) NOT NULL , `title` VARCHAR(55) NOT NULL , `created_by` VARCHAR(55) NOT NULL , `created_on` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`mst_sample_types_log_id`)) ;

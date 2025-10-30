@@ -1,0 +1,58 @@
+function send_mail_while_Release_to_Client($to = NULL, $from = NULL, $cc = NULL , $bcc = NULL, $msg = NULL, $sub = NULL, $attachment_file = NULL, $attachment_path = NULL, $report = false) {
+    // echo $msg; die;
+    $CI = &get_instance();
+    $CI->load->library('email');
+
+    $message = $msg;
+
+    // print_r($message);die;
+    if (is_array($to) && count($to) > 1)
+        $to_user = implode(',', $to); // convert email array to string
+    else
+        $to_user = $to;
+
+    if (is_array($cc) && count($cc) > 1)
+        $cc_user = implode(',', $cc); // convert email array to string
+    else
+        $cc_user = $cc;
+    
+    if (is_array($bcc) && count($bcc) > 1)
+        $bcc_user = implode(',', $bcc); // convert email array to string
+    else
+        $bcc_user = $bcc;
+
+
+    $config['protocol'] = PROTOCOL;
+    $config['smtp_host'] = HOST;
+    $config['smtp_user'] = USER;
+    $config['smtp_pass'] = PASS;
+    $config['smtp_port'] = PORT;
+    $config['newline'] = "\r\n";
+    $config['smtp_crypto'] = CRYPTO;
+    $config['charset'] = 'utf-8';
+    $config['newline'] = "\r\n";
+    $config['mailtype'] = 'html';
+    $CI->email->initialize($config);
+    $CI->email->from(FROM, 'BASIL');
+    if ($report) {
+        $CI->email->to($to_user);
+    } else {
+        $CI->email->to($to_user);
+    }
+    if ($cc_user) {
+        $CI->email->cc($cc_user);
+    }
+    $CI->email->cc($cc);
+    $CI->email->subject($sub);
+    $CI->email->message($message);
+
+
+// print_r($attachment_file);die;
+    $CI->email->attach($attachment_file);
+    $bool = $CI->email->send();
+    if ($bool) {
+        return true;
+    } else {
+        show_error($CI->email->print_debugger());
+    }
+}

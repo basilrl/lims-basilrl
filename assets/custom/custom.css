@@ -1,0 +1,84 @@
+.select2-container .select2-selection--single {
+    height: 38px !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 34px !important;
+}
+
+#custom-fields {
+    width: 100% !important;
+}
+
+.card-header .pagging .pagination {
+    float: right;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: #989494 !important;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    color: #fff !important;
+}
+
+.select2-container {
+    width: 100% !important;
+}
+
+label.error {
+    color: red;
+    font-size: 1rem;
+    width: 100%;
+}
+
+.form-group {
+    padding: 4px;
+}
+
+label {
+    margin-bottom: .1rem;
+    font-size: 14px;
+}
+
+.checkbox-menu {
+    padding: 12px;
+    height: 250px;
+    overflow: scroll;
+}
+
+label:not(.form-check-label):not(.custom-file-label) {
+    font-weight: 500;
+}
+
+#product-list .modal-content,
+#part-list .modal-content {
+    width: 50% !important;
+}
+
+@media (min-width: 576px) {
+    .modal-dialog {
+        max-width: 90% !important;
+    }
+}
+
+.modal-dialog {
+    overflow-y: initial !important
+}
+
+.modal-body {
+    overflow-y: auto;
+}
+
+#sample_detail h4 {
+    width: 100%;
+}
+
+#product_error {
+    color: red;
+}
+
+.edit {
+    width: 20px;
+    height: 20px;
+}
