@@ -1,0 +1,85 @@
+name: Deploy to Production
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        description: 'Type "DEPLOY-TO-lims.basilrl.com" to confirm'
+        required: true
+        default: ''
+      branch:
+        description: 'Branch to deploy'
+        required: true
+        default: 'master'
+        type: choice
+        options:
+          - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Verify confirmation
+      run: |
+        if [ "${{ github.event.inputs.confirmation }}" != "DEPLOY-TO-lims.basilrl.com" ]; then
+          echo "❌ Deployment cancelled - you must type 'DEPLOY-TO-lims.basilrl.com' to confirm"
+          exit 1
+        fi
+        echo "✅ Confirmation verified, proceeding with production deployment..."
+
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ github.event.inputs.branch }}
+
+    - name: Deploy to Production EC2
+      env:
+        PRIVATE_KEY: ${{ secrets.PROD_EC2_SSH_KEY }}
+        HOST: ${{ secrets.PROD_EC2_HOST }}
+        USER: ${{ secrets.PROD_EC2_USERNAME }}
+      run: |
+        set +e  # Don't exit on error so we can see what fails
+
+        echo "$PRIVATE_KEY" > private_key.pem
+        chmod 600 private_key.pem
+
+        mkdir -p ~/.ssh
+        chmod 700 ~/.ssh
+
+        ssh-keyscan -H $HOST >> ~/.ssh/known_hosts
+
+        echo "Testing SSH connection to $HOST as $USER"
+        ssh -vvv -i private_key.pem -o StrictHostKeyChecking=no ${USER}@${HOST} "echo 'SSH test successful'" 2>&1
+
+        if [ $? -ne 0 ]; then
+          echo "SSH connection failed!"
+          echo "Checking key file format:"
+          head -1 private_key.pem
+          tail -1 private_key.pem
+          exit 1
+        fi
+
+        echo "Deploying to production..."
+        ssh -i private_key.pem ${USER}@${HOST} << 'EOF'
+          cd /data/sites/lims-basilrl/
+          git pull origin master
+          echo "Deployment completed on $(hostname)"
+        EOF
+
+    - name: Deployment Summary
+      if: success()
+      run: |
+        echo "### 🚀 Production Deployment Successful" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "- **Server:** 43.205.106.20" >> $GITHUB_STEP_SUMMARY
+        echo "- **Branch:** ${{ github.event.inputs.branch }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **Deployed by:** ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **Time:** $(date -u)" >> $GITHUB_STEP_SUMMARY
+
+    - name: Notify Failure
+      if: failure()
+      run: |
+        echo "### ❌ Production Deployment Failed" >> $GITHUB_STEP_SUMMARY
+        echo "Check logs above for details" >> $GITHUB_STEP_SUMMARY
+
