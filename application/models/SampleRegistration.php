@@ -380,7 +380,7 @@ class SampleRegistration extends MY_Model
     public function get_registered_sample($start, $end, $trf, $customer_name, $product, $created_on, $ulr_no, $gc_number, $buyer, $status, $division, $style_no, $start_date, $end_date, $applicant,$labtype,$startdue,$enddue,$report_remark, $year, $month,$count = null)
     {
         // UPDATED BY SAURABH ON 15-11-2021,ADDED report_release_time, generated_date
-        $this->db->select('buyer.isactive as buyer_active,customer.isactive as customer_active,tr.trf_id,tr.tat_date,sr.due_date,barcode_no, barcode_path, sr.sample_reg_id, sample_customer_id, gc_no, sample_registration_branch_id, sample_type_name, DATE_FORMAT(sr.create_on, "%d-%b-%Y") as created_on, customer.customer_name as customer, sample_desc, buyer.customer_name as buyer, admin_fname as created_by, tr.trf_ref_no, sr.ulr_no,sr.status, gr.manual_report_file as manual_report_file,gr.qr_code_name as qr_code_name,sr.comment,sr.released_to_client, (select count(proforma_invoice_id) from invoice_proforma where sr.sample_reg_id = proforma_invoice_sample_reg_id) as pi_count, additional_flag, trf_service_type, report_release_time, generated_date, applicant.customer_name as applicant_name, acknowledgement_mail_status,tr.product_custom_fields,sr.manual_report_remark,sr.manual_report_result,sr.marked_invoice');
+        $this->db->select("buyer.isactive as buyer_active,customer.isactive as customer_active,tr.trf_id,tr.tat_date,sr.due_date,barcode_no, barcode_path, sr.sample_reg_id, sample_customer_id, gc_no, sample_registration_branch_id, sample_type_name, DATE_FORMAT(sr.create_on, '%d-%b-%Y') as created_on, customer.customer_name as customer, sample_desc, buyer.customer_name as buyer, admin_fname as created_by, tr.trf_ref_no, sr.ulr_no,sr.status, gr.manual_report_file as manual_report_file,gr.qr_code_name as qr_code_name,sr.comment,sr.released_to_client, (select count(proforma_invoice_id) from invoice_proforma where sr.sample_reg_id = proforma_invoice_sample_reg_id) as pi_count, additional_flag, trf_service_type, report_release_time, generated_date, applicant.customer_name as applicant_name, acknowledgement_mail_status,tr.product_custom_fields,sr.manual_report_remark,sr.manual_report_result,sr.marked_invoice,(CASE WHEN trf_service_type ='Regular' AND  ( service_days IS NULL OR service_days='') THEN CONCAT(trf_service_type,' 3 Days') WHEN trf_service_type ='Express' THEN CONCAT('Express',' 2 Days') WHEN trf_service_type ='Express3' THEN CONCAT('Express',' 3 Days') WHEN trf_service_type ='Same Day' THEN CONCAT('Same Day',' 0 Days') WHEN trf_service_type ='Urgent'  THEN CONCAT(trf_service_type,' 1 Days') WHEN service_days IS NOT NULL OR service_days!='' THEN CONCAT(trf_service_type,' ',service_days,' Days') END) AS trf_service_type ");
         $this->db->from('sample_registration sr');
         $this->db->join('trf_registration tr', 'sr.trf_registration_id = tr.trf_id');
         $this->db->join('mst_sample_types', 'sample_type_id = sr.sample_registration_sample_type_id');
@@ -1420,6 +1420,24 @@ class SampleRegistration extends MY_Model
             $customer_id = "0";
         }
 
+        // new change
+         $package = $this->db->where('sample_reg_id', $sample_reg_id)->select('package_name')->join('trf_registration tr', 'tr.trf_package_id= pac.package_id')->join('sample_registration sr', 'sr.trf_registration_id=tr.trf_id')->from('packages pac')->get();
+           if($package->num_rows() == 0){
+            $get_package = '';
+           }else{
+           $getPackage = $package->result_array();
+           $get_package = $getPackage[0]['package_name'];
+           } 
+// new change
+         $protocol = $this->db->where('sample_reg_id', $sample_reg_id)->select('protocol_name')->join('trf_registration tr', 'tr.trf_protocol_id= pac.protocol_id')->join('sample_registration sr', 'sr.trf_registration_id=tr.trf_id')->from('protocols pac')->get();
+           if($protocol->num_rows() == 0){
+            $get_protocol = '';
+           }else{
+           $getProtocol = $protocol->result_array();
+           $get_protocol = $getProtocol[0]['package_name'];
+           } 
+ 
+
         if ($data['branch_id'] == 4) {
             $val = "WHERE sample_test_sample_reg_id={$sample_reg_id} and lab_type_id = {$lab_type_id} ";
             $listQuery = "SELECT  ts.test_id,ts.test_name,ts.test_method,CONCAT(part_name,' - ',parts_desc) AS part_name,(SELECT sample_type_name FROM mst_sample_types WHERE sample_type_id = sr.sample_registration_sample_type_id) AS sample_type_id ,gc_no,barcode_path,ts.units, concat(admin_fname,' ',admin_lname) as assigned_to
@@ -1638,6 +1656,14 @@ class SampleRegistration extends MY_Model
         $output .= '<tr><td align="center" width="50%" style="border:none;" colspan=2>';
         $output .= '<table width="100%" style="margin-bottom:20px !important" border="0" cellpadding="5" cellspacing="10" class = "fullbordered">';
         $slno = 1;
+            // new change
+        if (!empty($get_package)) {
+            $output .= '<tr><td colspan="5" class="big" style="text-align:center;">'.$get_package.'</td></tr>';
+        }
+          // new change
+        if (!empty($get_protocol)) {
+            $output .= '<tr><td colspan="5" class="big" style="text-align:center;">'.$get_protocol.'</td></tr>';
+        }
         $output .= '<tr><td class="big">SL.No</td><td class="big">Test Conducted</td><td class="big">Test Method</td><td class="big">Components</td><td class="big">Results</td><td class="big">Lab Type</td>';
         if ($data['branch_id'] == 2) {
             $output .= '<td class="big">Assigned To</td>';

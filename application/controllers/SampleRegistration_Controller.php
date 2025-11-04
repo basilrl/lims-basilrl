@@ -898,7 +898,8 @@ class SampleRegistration_Controller extends MY_Controller
         /*-----end--------Due Date calculation------------------------------- */
         $trf_record = array(
             "trf_service_type" => $data->trf_service_type,
-            "service_days" => $data->service_days,
+            "service_days" =>  $record['service_days'],
+            // "service_days" => $data->service_days,
             "trf_applicant" => $data->trf_applicant,
             "trf_contact" => $data->trf_contact,
             "trf_sample_ref_id" => $data->trf_sample_ref_id,
@@ -1129,6 +1130,7 @@ class SampleRegistration_Controller extends MY_Controller
                 $objPHPExcel->getActiveSheet()->setCellValue('Q1', "Report Release Date");
                 $objPHPExcel->getActiveSheet()->setCellValue('R1', "Style Number");
                 $objPHPExcel->getActiveSheet()->setCellValue('S1', "Color");
+                $objPHPExcel->getActiveSheet()->setCellValue('T1', "Invoice Status"); // new change
 
                 $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
                 $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
@@ -1149,6 +1151,7 @@ class SampleRegistration_Controller extends MY_Controller
                 $objPHPExcel->getActiveSheet()->getColumnDimension('Q')->setAutoSize(true);
                 $objPHPExcel->getActiveSheet()->getColumnDimension('R')->setAutoSize(true);
                 $objPHPExcel->getActiveSheet()->getColumnDimension('S')->setAutoSize(true);
+                $objPHPExcel->getActiveSheet()->getColumnDimension('T')->setAutoSize(true); // new change
 
                 $i = 2;
                 foreach ($data as $key => $value) {
@@ -1191,6 +1194,7 @@ class SampleRegistration_Controller extends MY_Controller
                     $objPHPExcel->getActiveSheet()->setCellValue('Q' . $i, ($value->report_release_time) ? $value->report_release_time : '');
                     $objPHPExcel->getActiveSheet()->setCellValue('R' . $i, $style_no ? $style_no : '');
                     $objPHPExcel->getActiveSheet()->setCellValue('S' . $i, $color ? $color : '');
+                    $objPHPExcel->getActiveSheet()->setCellValue('T' . $i, $value->marked_invoice == '1' ? 'Un-Marked' : 'Marked'); // new change
                     $i++;
                 }
 

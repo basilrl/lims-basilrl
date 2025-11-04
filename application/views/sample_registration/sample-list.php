@@ -320,6 +320,7 @@
                         <th>SL No.</th>
                         <th>Basil Report No.</th>
                         <th>Barcode</th>
+                        <th>TRF Service Type</th><!-- new change -->
                         <!-- <th>ULR No.</th> -->
                         <th>Product</th>
                         <th>TRF Reference No.</th>
@@ -365,6 +366,7 @@
                             <td><?php echo $sno += 1; ?></td>
                             <td><?php echo $sample['gc_no']; ?></td>
                             <td><img src="<?php echo $sample['barcode_path']; ?>"></td>
+                            <td><?php echo $sample['trf_service_type']; ?></td> <!-- new change -->
                             <!-- <td><?php echo $sample['ulr_no']; ?></td> -->
                             <td><?php echo $sample['sample_type_name']; ?></td>
                             <td><?php echo $sample['trf_ref_no']; ?></td>
