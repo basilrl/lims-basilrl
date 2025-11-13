@@ -947,15 +947,10 @@ class SampleRegistration_Controller extends MY_Controller
             "updated_by" => $this->user,
             "create_on" => date('Y-m-d H:i:s'),
             "clone_trf_id" => $trf_id,
-            'sales_person'  => $data->sales_person,
-<<<<<<< HEAD
-            'trf_package_id' => $data->trf_package_id,
-			'trf_protocol_id' => $$data->trf_protocol_id,
-=======
+            "sales_person"  => $data->sales_person,
             'trf_package_id'  => $data->trf_package_id,
             'trf_protocol_id'  => $data->trf_protocol_id,
->>>>>>> e0717f1653b1d54ae5afd266a27513e31b3a102a
-        );
+         );
 
         $trf_ids = $this->trf->insert_data('trf_registration', $trf_record);
         if ($trf_ids) {
