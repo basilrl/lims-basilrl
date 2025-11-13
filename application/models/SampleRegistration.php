@@ -167,6 +167,7 @@ class SampleRegistration extends MY_Model
                 $record['gc_no'] = $unique;
             }
         }
+
         unset($record['gc_number']);
         // Generate ulr number/*-------------Check current year count - If count is zero truncate table 14-01-2022------------------*/
         $count = $this->db->select('count(ulr_id) as id_count')->where('current_year', date('Y'))->get('cps_ulr')->row_array();
@@ -233,6 +234,9 @@ class SampleRegistration extends MY_Model
             } else if ($trf_details->trf_service_type === 'Express3') {
                 $includingToday = 2;
                 $due_date = $this->calculateDueDate(date('Y-m-d H:i', strtotime($receivedate)), $includingToday);
+            } else if ($data->trf_service_type === 'Same Day') {
+                $includingToday = 0;
+                $due_date = $this->sr->calculateDueDate(date('Y-m-d H:i', strtotime(date('Y-m-d H:i:s'))), $includingToday);
             } else {
                 $includingToday = 0;
                 $due_date = $this->calculateDueDate(date('Y-m-d H:i', strtotime($receivedate)), $includingToday, true);
@@ -377,17 +381,18 @@ class SampleRegistration extends MY_Model
         }
         return [];
     }
-    public function get_registered_sample($start, $end, $trf, $customer_name, $product, $created_on, $ulr_no, $gc_number, $buyer, $status, $division, $style_no, $start_date, $end_date, $applicant,$labtype,$startdue,$enddue,$report_remark, $year, $month,$count = null)
+    public function get_registered_sample($start, $end, $trf, $customer_name, $product, $created_on, $ulr_no, $gc_number, $buyer, $status, $division, $style_no, $start_date, $end_date, $applicant, $labtype, $startdue, $enddue, $report_remark, $report_review, $year, $month, $count = null)
     {
         // UPDATED BY SAURABH ON 15-11-2021,ADDED report_release_time, generated_date
-        $this->db->select("buyer.isactive as buyer_active,customer.isactive as customer_active,tr.trf_id,tr.tat_date,sr.due_date,barcode_no, barcode_path, sr.sample_reg_id, sample_customer_id, gc_no, sample_registration_branch_id, sample_type_name, DATE_FORMAT(sr.create_on, '%d-%b-%Y') as created_on, customer.customer_name as customer, sample_desc, buyer.customer_name as buyer, admin_fname as created_by, tr.trf_ref_no, sr.ulr_no,sr.status, gr.manual_report_file as manual_report_file,gr.qr_code_name as qr_code_name,sr.comment,sr.released_to_client, (select count(proforma_invoice_id) from invoice_proforma where sr.sample_reg_id = proforma_invoice_sample_reg_id) as pi_count, additional_flag, trf_service_type, report_release_time, generated_date, applicant.customer_name as applicant_name, acknowledgement_mail_status,tr.product_custom_fields,sr.manual_report_remark,sr.manual_report_result,sr.marked_invoice,(CASE WHEN trf_service_type ='Regular' AND  ( service_days IS NULL OR service_days='') THEN CONCAT(trf_service_type,' 3 Days') WHEN trf_service_type ='Express' THEN CONCAT('Express',' 2 Days') WHEN trf_service_type ='Express3' THEN CONCAT('Express',' 3 Days') WHEN trf_service_type ='Same Day' THEN CONCAT('Same Day',' 0 Days') WHEN trf_service_type ='Urgent'  THEN CONCAT(trf_service_type,' 1 Days') WHEN service_days IS NOT NULL OR service_days!='' THEN CONCAT(trf_service_type,' ',service_days,' Days') END) AS trf_service_type ");
+        $this->db->select("buyer.isactive as buyer_active,customer.isactive as customer_active,tr.trf_id,tr.tat_date,sr.due_date,barcode_no, barcode_path, sr.sample_reg_id, sample_customer_id, gc_no, sample_registration_branch_id, sample_type_name, DATE_FORMAT(sr.create_on, '%d-%b-%Y') as created_on, customer.customer_name as customer, sample_desc, buyer.customer_name as buyer, admin_profile.admin_fname as created_by, tr.trf_ref_no, sr.ulr_no,sr.status, gr.manual_report_file as manual_report_file,gr.qr_code_name as qr_code_name,sr.comment,sr.released_to_client, (select count(proforma_invoice_id) from invoice_proforma where sr.sample_reg_id = proforma_invoice_sample_reg_id) as pi_count, additional_flag, trf_service_type, report_release_time, generated_date, applicant.customer_name as applicant_name, acknowledgement_mail_status,tr.product_custom_fields,sr.manual_report_remark,sr.manual_report_result,sr.marked_invoice,(CASE WHEN trf_service_type ='Regular' AND  ( service_days IS NULL OR service_days='') THEN CONCAT(trf_service_type,' 3 Days') WHEN trf_service_type ='Express' THEN CONCAT('Express',' 2 Days') WHEN trf_service_type ='Express3' THEN CONCAT('Express',' 3 Days') WHEN trf_service_type ='Same Day' THEN CONCAT('Same Day',' 0 Days') WHEN trf_service_type ='Urgent'  THEN CONCAT(trf_service_type,' 1 Days') WHEN service_days IS NOT NULL OR service_days!='' THEN CONCAT(trf_service_type,' ',service_days,' Days') END) AS trf_service_type,ap.admin_fname ");
         $this->db->from('sample_registration sr');
         $this->db->join('trf_registration tr', 'sr.trf_registration_id = tr.trf_id');
         $this->db->join('mst_sample_types', 'sample_type_id = sr.sample_registration_sample_type_id');
         $this->db->join('cust_customers customer', 'customer.customer_id=tr.trf_applicant', 'left');
         $this->db->join('cust_customers buyer', 'buyer.customer_id=tr.trf_buyer', 'left');
         $this->db->join('cust_customers applicant', 'applicant.customer_id=tr.trf_applicant', 'left');
-        $this->db->join('admin_profile', 'sr.create_by = uidnr_admin', 'left');
+        $this->db->join('admin_profile', 'sr.create_by = admin_profile.uidnr_admin', 'left');
+        $this->db->join('admin_profile as ap', 'sr.report_reviewer_id = ap.uidnr_admin', 'left'); // report review;
         $this->db->join('sample_hold_remark shr', 'shr.sample_reg_id=sr.sample_reg_id', 'left');
         $this->db->join('generated_reports as gr', 'gr.sample_reg_id = sr.sample_reg_id AND (gr.additional_report_flag <> 1 AND  gr.revise_report <> "1" )', 'left'); // added by millan on 19-01-2021
         // $this->db->where('buyer.isactive', 'Active');
@@ -421,6 +426,10 @@ class SampleRegistration extends MY_Model
         // $this->db->group_end();
         // Added by saurabh on 01-02-2022 to show division wise list
 
+// report review
+        if ($report_review != "null" && $report_review != "") {
+            $this->db->where('sr.report_reviewer_id', $report_review);
+        }
         if ($report_remark != "null" && $report_remark != "") {
             $this->db->where('sr.marked_invoice', $report_remark);
         }
@@ -2628,4 +2637,16 @@ class SampleRegistration extends MY_Model
         return [];
     }
     // Added by Saurabh on 02-07-2021 to get partial/Revise report type
+   // report reviewer
+
+    public function get_reviewer()
+    {
+        $sql = $this->db->where('report_reviewer', 1)->where('admin_active', '1')->join('admin_users', 'admin_users.uidnr_admin=admin_profile.uidnr_admin')->get('admin_profile');
+        if ($sql->num_rows() > 0) {
+            return $sql->result_array();
+        } else {
+            return [];
+        }
+    }
+
 }

@@ -172,7 +172,11 @@ class Backlogs_details extends MY_Controller {
         // $sample_reg_id = $this->input->post('sample_reg_id');
         $year = $this->input->post('year');
         $month = $this->input->post('month');
-       
+        //    report review
+        $report_reviewer = $this->input->post('report_reviewer');
+        if ($report_reviewer != "" && $report_reviewer != null) {
+            $where['sr.report_reviewer_id'] = $report_reviewer;
+        }
         if ($year != "" && $month != "") {
             $where["YEAR(sr.create_on)"] = $year;
             $where["MONTH(sr.create_on)"] = $month;

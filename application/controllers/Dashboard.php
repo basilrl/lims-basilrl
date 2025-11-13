@@ -32,6 +32,7 @@ class Dashboard extends MY_Controller
         $data['sample_status'] = $this->sr->get_status();
         $data['division'] = $this->sr->get_fields("mst_divisions", "division_id,division_name",$diviion_where);
         $data['labType'] = $this->sr->get_result("lab_type_id,lab_type_name", "mst_lab_type", $lab_where);
+        $data['report_reviewer'] = $this->sr->get_reviewer(); // report reviewer
 
         $data['todayRegisteredSample'] = $this->sr->getDashboardSamplesData(['DATE(sample_registration.create_on)' => date("Y-m-d")]);
         $data['totalRegisteredSample'] = $this->sr->getDashboardSamplesData(NULL);
@@ -117,6 +118,9 @@ class Dashboard extends MY_Controller
                 $filter .= " AND MONTH(sr.create_on) =" . $quote_chart_filter[8];
                 
             }
+             if ($quote_chart_filter[9] != "" && $quote_chart_filter[9] > 0) {
+                $filter .= " AND sr.report_reviewer_id =" . $quote_chart_filter[9];
+            }// report reviewer
             
         }
         // echo '<pre>';
@@ -153,6 +157,10 @@ class Dashboard extends MY_Controller
              if ($quote_chart_filter[7] != "" && $quote_chart_filter[8] != "") {
                  $filter .= " AND YEAR(sr.create_on) =" . $quote_chart_filter[7];
                 $filter .= " AND MONTH(sr.create_on) =" . $quote_chart_filter[8];
+            }
+             // report reviewer
+            if ($quote_chart_filter[9] != "" && $quote_chart_filter[9] > 0) {
+                $filter .= " AND sr.report_reviewer_id =" . $quote_chart_filter[9];
             }
         }
         echo json_encode($this->dm->reportChart($filter));

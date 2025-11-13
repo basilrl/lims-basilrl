@@ -21,6 +21,7 @@ class Manual_report extends MY_Controller
         $this->form_validation->set_rules('mr_result_ready_date', 'Report Ready Date', 'trim|required');
         $this->form_validation->set_rules('manual_report_result', 'Result status', 'trim|required|in_list[1,2,3]');
         $this->form_validation->set_rules('manual_report_file', 'Report Document', 'callback_file_upload_check');
+        $this->form_validation->set_rules('report_reviewer', 'Report Reviewer Name','trim|required'); // report review
         // $this->form_validation->set_rules('manual_report_worksheet', 'Report Worksheet', 'callback_file_upload_check');
         if ($post['manual_report_result'] == 3) {
             $this->form_validation->set_rules('manual_report_remark', 'Result status Remarks', 'trim|required|min_length[3]');
@@ -44,6 +45,9 @@ class Manual_report extends MY_Controller
                 unset($post['manual_report_worksheet']);
             }
             $report_upload = $this->multiple_upload_image($_FILES['manual_report_file']);
+            $post['report_reviewer_id']=$post['report_reviewer']; // report reviewer
+            $update_sample_registration['report_reviewer_id']=$post['report_reviewer']; // report reviewer
+             unset($post['report_reviewer']);// report reviewer
             if ($report_upload) {
                 $post['manual_report_file'] = $report_upload['aws_path'];
             } else {
@@ -52,6 +56,7 @@ class Manual_report extends MY_Controller
             if (array_key_exists('manual_report_file', $post)) {
                 $post['status']='Report Generated';
                 $update = $this->sr->update_data('generated_reports', $post, ['sample_reg_id' => $post['sample_reg_id']]);
+                // echo $this->db->last_query();die;
                 if ($update) {
                     $update_sample_registration['status']='Report Generated';
                     $update = $this->sr->update_data('sample_registration', $update_sample_registration, ['sample_reg_id' => $post['sample_reg_id']]);

@@ -218,7 +218,15 @@
       </select>
 
     </div>
-        <div class="col-md-2">
+    <div class="col-md-3">
+      <select name="report_reviewer" class="form-control  report_reviewer" style="display:inline-block" placeholder="Report Reviewer..." id="report_reviewer">
+        <option value="">Report Reviewer Name</option>
+                    <?php foreach($report_reviewer as $report): ?>
+                    <option value="<?=$report['uidnr_admin']?>"><?=$report['admin_fname'].' '.$report['admin_lname']?></option>
+                    <?php endforeach; ?>
+      </select>
+    </div>
+    <div class="col-md-2">
       <div class="form-group pt-0 mt-0">
         <button type="button" class="btn btn-secondary" id="filter"><i class="fa fa-search" aria-hidden="true"></i></button>
         <button type="button " class="btn btn-danger" id="reset"><i class="fa fa-retweet" aria-hidden="true"></i></button>
@@ -651,7 +659,15 @@
     // let status = btoa('Registered');
     let status = null;
 
-    let newUrl = url + '/' + 0 + '/' + null + '/' + customer + '/' + null + '/' + null + '/' + null + '/' + null + '/' + buyer + '/' + status + '/' + division_dropdown + '/' + null + '/' + start_date + '/' + end_date + '/' + agent + '/' + null + '/' + null + '/' + null + '/' + null + '/' + year + '/' + month;
+    //  report reviewer
+      var report_reviewer = $('#report_reviewer').val();
+      if (report_reviewer == "") {
+        report_reviewer = null;
+      } else {
+        report_reviewer = ($('#report_reviewer').val());
+      }
+
+    let newUrl = url + '/' + 0 + '/' + null + '/' + customer + '/' + null + '/' + null + '/' + null + '/' + null + '/' + buyer + '/' + status + '/' + division_dropdown + '/' + null + '/' + start_date + '/' + end_date + '/' + agent + '/' + null + '/' + null + '/' + null + '/' + null + '/'+report_reviewer + '/' + year + '/' + month;
     // window.location.href = url + '/' + 0 + '/' + null + '/' + customer + '/' + null + '/' + null + '/' + null + '/' + null + '/' + buyer + '/' + status + '/' + division_dropdown + '/' + null + '/' + start_date + '/' + end_date + '/' + agent;
 
     window.open(newUrl, '_blank');
@@ -718,7 +734,15 @@
     let status = null;
     console.log(buyer);
 
-    let newUrl = url + '/' + 0 + '/' + null + '/' + customer + '/' + null + '/' + null + '/' + null + '/' + null + '/' + buyer + '/' + status + '/' + division_dropdown + '/' + null + '/' + start_date + '/' + end_date + '/' + agent + '/' + null + '/' + null + '/' + null + '/' + null + '/' + year + '/' + month;
+    //  report reviewer
+      var report_reviewer = $('#report_reviewer').val();
+      if (report_reviewer == "") {
+        report_reviewer = null;
+      } else {
+        report_reviewer = ($('#report_reviewer').val());
+      }
+
+    let newUrl = url + '/' + 0 + '/' + null + '/' + customer + '/' + null + '/' + null + '/' + null + '/' + null + '/' + buyer + '/' + status + '/' + division_dropdown + '/' + null + '/' + start_date + '/' + end_date + '/' + agent + '/' + null + '/' + null + '/' + null + '/' + null + '/'+report_reviewer + '/' + year + '/' + month;
     window.open(newUrl, '_blank');
     // window.location.href = url + '/' + 0 + '/' + null + '/' + customer + '/' + null + '/' + null + '/' + null + '/' + null + '/' + buyer + '/' + status + '/' + division_dropdown + '/' + null + '/' + start_date + '/' + end_date + '/' + agent;
   })
@@ -778,7 +802,15 @@
     }
     let status = btoa('Hold Sample');
 
-    let newUrl = url + '/' + 0 + '/' + null + '/' + customer + '/' + null + '/' + null + '/' + null + '/' + null + '/' + buyer + '/' + status + '/' + division_dropdown + '/' + null + '/' + start_date + '/' + end_date + '/' + agent + '/' + null + '/' + null + '/' + null + '/' + null + '/' + year + '/' + month;
+    //  report reviewer
+      var report_reviewer = $('#report_reviewer').val();
+      if (report_reviewer == "") {
+        report_reviewer = null;
+      } else {
+        report_reviewer = ($('#report_reviewer').val());
+      }
+
+    let newUrl = url + '/' + 0 + '/' + null + '/' + customer + '/' + null + '/' + null + '/' + null + '/' + null + '/' + buyer + '/' + status + '/' + division_dropdown + '/' + null + '/' + start_date + '/' + end_date + '/' + agent + '/' + null + '/' + null + '/' + null + '/' + null + '/'+report_reviewer + '/' + year + '/' + month;
     window.open(newUrl, '_blank');
     // window.location.href = url + '/' + 0 + '/' + null + '/' + customer + '/' + null + '/' + null + '/' + null + '/' + null + '/' + buyer + '/' + status + '/' + division_dropdown + '/' + null + '/' + start_date + '/' + end_date + '/' + agent;
   })
@@ -829,7 +861,7 @@
       division_dropdown = ($('.division_dropdown').val());
     }
 
-      // new
+    // new
     let year = $('#year').val();
     if (year == "") {
       year = null;
@@ -844,7 +876,15 @@
     }
     let status = btoa('Hold Sample');
 
-    let newUrl = url + '/' + 0 + '/' + null + '/' + customer + '/' + null + '/' + null + '/' + null + '/' + null + '/' + buyer + '/' + status + '/' + division_dropdown + '/' + null + '/' + start_date + '/' + end_date + '/' + agent + '/' + null + '/' + null + '/' + null + '/' + null + '/' + year + '/' + month;
+    //  report reviewer
+      var report_reviewer = $('#report_reviewer').val();
+      if (report_reviewer == "") {
+        report_reviewer = null;
+      } else {
+        report_reviewer = ($('#report_reviewer').val());
+      }
+
+    let newUrl = url + '/' + 0 + '/' + null + '/' + customer + '/' + null + '/' + null + '/' + null + '/' + null + '/' + buyer + '/' + status + '/' + division_dropdown + '/' + null + '/' + start_date + '/' + end_date + '/' + agent + '/' + null + '/' + null + '/' + null + '/' + null + '/'+report_reviewer + '/' + year + '/' + month;
     window.open(newUrl, '_blank');
     // window.location.href = url + '/' + 0 + '/' + null + '/' + customer + '/' + null + '/' + null + '/' + null + '/' + null + '/' + buyer + '/' + status + '/' + division_dropdown + '/' + null + '/' + start_date + '/' + end_date + '/' + agent;
   })
@@ -895,7 +935,7 @@
       division_dropdown = ($('.division_dropdown').val());
     }
 
-      // new
+    // new
     let year = $('#year').val();
     if (year == "") {
       year = null;
@@ -910,7 +950,15 @@
     }
     let status = btoa('Login Cancelled');
 
-    let newUrl = url + '/' + 0 + '/' + null + '/' + customer + '/' + null + '/' + null + '/' + null + '/' + null + '/' + buyer + '/' + status + '/' + division_dropdown + '/' + null + '/' + start_date + '/' + end_date + '/' + agent + '/' + null + '/' + null + '/' + null + '/' + null + '/' + year + '/' + month;
+    //  report reviewer
+      var report_reviewer = $('#report_reviewer').val();
+      if (report_reviewer == "") {
+        report_reviewer = null;
+      } else {
+        report_reviewer = ($('#report_reviewer').val());
+      }
+
+    let newUrl = url + '/' + 0 + '/' + null + '/' + customer + '/' + null + '/' + null + '/' + null + '/' + null + '/' + buyer + '/' + status + '/' + division_dropdown + '/' + null + '/' + start_date + '/' + end_date + '/' + agent + '/' + null + '/' + null + '/' + null + '/' + null + '/'+report_reviewer + '/' + year + '/' + month;
     window.open(newUrl, '_blank');
     // window.location.href = url + '/' + 0 + '/' + null + '/' + customer + '/' + null + '/' + null + '/' + null + '/' + null + '/' + buyer + '/' + status + '/' + division_dropdown + '/' + null + '/' + start_date + '/' + end_date + '/' + agent;
   })
@@ -961,7 +1009,7 @@
     } else {
       division_dropdown = ($('.division_dropdown').val());
     }
-      // new
+    // new
     let year = $('#year').val();
     if (year == "") {
       year = null;
@@ -982,7 +1030,15 @@
       String(today.getDate()).padStart(2, '0');
     let startdue = btoa(formattedDate);
 
-    let newUrl = url + '/' + 0 + '/' + null + '/' + customer + '/' + null + '/' + null + '/' + null + '/' + null + '/' + buyer + '/' + status + '/' + division_dropdown + '/' + null + '/' + start_date + '/' + end_date + '/' + agent + '/' + null + '/' + startdue + '/' + null + '/' + null + '/' + year + '/' + month;
+    //  report reviewer
+      var report_reviewer = $('#report_reviewer').val();
+      if (report_reviewer == "") {
+        report_reviewer = null;
+      } else {
+        report_reviewer = ($('#report_reviewer').val());
+      }
+
+    let newUrl = url + '/' + 0 + '/' + null + '/' + customer + '/' + null + '/' + null + '/' + null + '/' + null + '/' + buyer + '/' + status + '/' + division_dropdown + '/' + null + '/' + start_date + '/' + end_date + '/' + agent + '/' + null + '/' + startdue + '/' + null + '/' + null + '/'+report_reviewer + '/' + year + '/' + month;
     window.open(newUrl, '_blank');
     // window.location.href = url + '/' + 0 + '/' + null + '/' + customer + '/' + null + '/' + null + '/' + null + '/' + null + '/' + buyer + '/' + status + '/' + division_dropdown + '/' + null + '/' + start_date + '/' + end_date + '/' + agent;
   })
@@ -1032,7 +1088,7 @@
     } else {
       division_dropdown = ($('.division_dropdown').val());
     }
-       // new
+    // new
     let year = $('#year').val();
     if (year == "") {
       year = null;
@@ -1053,7 +1109,15 @@
       String(today.getDate()).padStart(2, '0');
     let startdue = btoa(formattedDate);
 
-    let newUrl = url + '/' + 0 + '/' + null + '/' + customer + '/' + null + '/' + null + '/' + null + '/' + null + '/' + buyer + '/' + status + '/' + division_dropdown + '/' + null + '/' + start_date + '/' + end_date + '/' + agent + '/' + null + '/' + startdue + '/' + null + '/' + null + '/' + year + '/' + month;
+    //  report reviewer
+      var report_reviewer = $('#report_reviewer').val();
+      if (report_reviewer == "") {
+        report_reviewer = null;
+      } else {
+        report_reviewer = ($('#report_reviewer').val());
+      }
+
+    let newUrl = url + '/' + 0 + '/' + null + '/' + customer + '/' + null + '/' + null + '/' + null + '/' + null + '/' + buyer + '/' + status + '/' + division_dropdown + '/' + null + '/' + start_date + '/' + end_date + '/' + agent + '/' + null + '/' + startdue + '/' + null + '/' + null + '/'+report_reviewer + '/' + year + '/' + month;
     window.open(newUrl, '_blank');
     // window.location.href = url + '/' + 0 + '/' + null + '/' + customer + '/' + null + '/' + null + '/' + null + '/' + null + '/' + buyer + '/' + status + '/' + division_dropdown + '/' + null + '/' + start_date + '/' + end_date + '/' + agent;
   })
@@ -1098,7 +1162,7 @@
     } else {
       division_dropdown = ($('.division_dropdown').val());
     }
-       // new
+    // new
     let year = $('#year').val();
     if (year == "") {
       year = null;
@@ -1119,7 +1183,15 @@
       String(today.getDate()).padStart(2, '0');
     let enddue = btoa(formattedDate);
 
-    let newUrl = url + '/' + 0 + '/' + null + '/' + customer + '/' + null + '/' + null + '/' + null + '/' + null + '/' + buyer + '/' + status + '/' + division_dropdown + '/' + null + '/' + null + '/' + null + '/' + agent + '/' + null + '/' + null + '/' + enddue + '/' + null + '/' + year + '/' + month;
+    //  report reviewer
+      var report_reviewer = $('#report_reviewer').val();
+      if (report_reviewer == "") {
+        report_reviewer = null;
+      } else {
+        report_reviewer = ($('#report_reviewer').val());
+      }
+
+    let newUrl = url + '/' + 0 + '/' + null + '/' + customer + '/' + null + '/' + null + '/' + null + '/' + null + '/' + buyer + '/' + status + '/' + division_dropdown + '/' + null + '/' + null + '/' + null + '/' + agent + '/' + null + '/' + null + '/' + enddue + '/' + null + '/'+report_reviewer + '/' + year + '/' + month;
     window.open(newUrl, '_blank');
     // window.location.href = url + '/' + 0 + '/' + null + '/' + customer + '/' + null + '/' + null + '/' + null + '/' + null + '/' + buyer + '/' + status + '/' + division_dropdown + '/' + null + '/' + start_date + '/' + end_date + '/' + agent;
   })
@@ -1166,20 +1238,21 @@
     let year = $('#year option:selected').val(); // new
     let month = $('#month option:selected').val(); //new
     let customer = $('#customer option:selected').val();
-// new
-    if(year != '' && month == ''){
+    let report_reviewer = $('#report_reviewer option:selected').val(); //report_reviewer
+    // new
+    if (year != '' && month == '') {
       $('#error_message').text('Month cannot be blank while choosing year. Please select month !!!');
-        setTimeout(function() {
-          $('#error_message').fadeOut();
-        }, 5000);
-        e.preventDefault(); 
+      setTimeout(function() {
+        $('#error_message').fadeOut();
+      }, 5000);
+      e.preventDefault();
     }
-    if(year == '' && month != ''){
+    if (year == '' && month != '') {
       $('#error_message').text('Year cannot be blank while choosing month. Please select year !!!');
-        setTimeout(function() {
-          $('#error_message').fadeOut();
-        }, 5000);
-        e.preventDefault(); 
+      setTimeout(function() {
+        $('#error_message').fadeOut();
+      }, 5000);
+      e.preventDefault();
     }
     // end
     if (start_date !== '' && end_date !== '') {
@@ -1208,6 +1281,7 @@
         customer: customer,
         sampleyear: year, // new
         month: month, // new
+        report_reviewer: report_reviewer, // report_reviewer
       },
       success: function(result) {
         $('.pageloader').remove();
@@ -1385,6 +1459,7 @@
       $('#customer').val("");
       $('#year').val("");
       $('#month').val("");
+      $('#report_reviewer').val("");// report review
     } else {
       var sample = [];
       sample[0] = $('#start_date').val();
@@ -1396,6 +1471,7 @@
       sample[6] = $('#customer').val();
       sample[7] = $('#year').val();
       sample[8] = $('#month').val();
+      sample[9] = $('#report_reviewer').val(); // report review
     }
     console.log(sample);
 
@@ -1467,7 +1543,8 @@
       $('.division_dropdown').val("");
       $('#customer').val("");
       $('#year').val("");
-      $('#month').val("");
+      $('#month').val(""); 
+      $('#report_reviewer').val(""); // report review
     } else {
       var report = [];
       report[0] = $('#start_date').val();
@@ -1479,6 +1556,7 @@
       report[6] = $('#customer').val();
       report[7] = $('#year').val();
       report[8] = $('#month').val();
+      report[9] = $('#report_reviewer').val(); // report review
     }
     console.log(report);
 
@@ -2196,6 +2274,7 @@
         customer: $('#customer').val(),
         year: $('#year').val(),
         month: $('#month').val(),
+         report_reviewer: $('#report_reviewer').val(), // report review
       },
       success: function(data) {
         var backlogs_data = $.parseJSON(data);
@@ -2272,6 +2351,7 @@
         customer: $('#customer').val(),
         year: $('#year').val(),
         month: $('#month').val(),
+        report_reviewer: $('#report_reviewer').val(),// report review
       },
       success: function(data) {
         var invoice_data = $.parseJSON(data);

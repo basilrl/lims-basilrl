@@ -844,6 +844,8 @@ class MY_Model extends CI_Model
 		if ($where != NULL) {
 			$this->db->where($where);
 		}
+		if ($res['report_reviewer'] != '')
+			$this->db->where('sr.report_reviewer_id', $res['report_reviewer']); // report_reviewer
 		//echo '<pre>';print_r($num);die;
 		if ($res['buyer'] != '')
 			$this->db->where('tr.trf_buyer', $res['buyer']);

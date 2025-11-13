@@ -749,6 +749,50 @@ class Users extends MY_Controller
         redirect('users');
     }
 
-    
+     // report reviewer
+    public function mark_report_user()
+    {
+        $get = $this->input->get();
+        if (array_key_exists('uidnr_admin',$get) && $get['uidnr_admin'] && $get['uidnr_admin']>0) {
+            $report_reviewer =  $this->User_model->get_row('report_reviewer', 'admin_users', ['uidnr_admin' => $get['uidnr_admin']]);
+            $post = array();
+                if ($report_reviewer && $report_reviewer->report_reviewer == 1) {
+                    $post['report_reviewer']= 0;
+                    $msg = 'USER REMOVE FROM REPORT REVIEWER';
+                } else {
+                    $post['report_reviewer']= 1;
+                    $msg = 'USER MARK AS REPORT REVIEWER';
+                }
+            if (count($post)>0) {
+               $update = $this->User_model->update_data('admin_users',$post, ['uidnr_admin' => $get['uidnr_admin']]);
+               if ($update) {
+                $log_deatils = array(
+                    'text'          => "MARK REORT USER UPDATED",
+                    'created_by'    => $this->admin_id(),
+                    'created_on'    => date('Y-m-d H:i:s'),
+                    'record_id'     => $get['uidnr_admin'],
+                    'source_module' => 'Users',
+                    'action_taken'  => 'mark_report_user'
+                );
+
+               $result =  $this->User_model->insert_data('user_log_history',$log_deatils);
+                if($result){
+                    $this->session->set_flashdata('success', $msg);
+                }
+                else{
+                    $this->session->set_flashdata('error', 'error in generating log'); 
+                }
+                  
+               } else {
+                $this->session->set_flashdata('error', 'SOMETHING WRONG WHILE UPDATE!');
+               }
+            } else {
+                $this->session->set_flashdata('error', 'SOMETHING WRONG');
+            }
+        }else{
+            $this->session->set_flashdata('error', 'RECORD NOT FOUND');
+        }
+        redirect($_SERVER['HTTP_REFERER']);
+    }
    
 }

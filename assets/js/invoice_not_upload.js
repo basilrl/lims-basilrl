@@ -54,6 +54,9 @@ $(document).ready(function(){
                 labType: $('#labType').val(),
                 division_dropdown: $('.division_dropdown').val(),
                 customer: $('#customer').val(),
+                year: $('#year').val(),
+                month: $('#month').val(),
+                report_reviewer: $('#report_reviewer').val(),// report reviewer
             },
             success: function (data) {
                 var invoice_data = $.parseJSON(data);

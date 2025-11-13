@@ -26,6 +26,7 @@ class Backlogs_model extends MY_Model
             $this->db->limit($limit,$offset);
         }
         $result = $this->db->get();
+        // echo $this->db->last_query();
 
         if ($result->num_rows() > 0) {
             return $result->result();
