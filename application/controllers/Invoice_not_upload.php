@@ -26,7 +26,12 @@ class Invoice_not_upload extends MY_Controller {
         $where = array();
         $year = $this->input->post('year');
         $month = $this->input->post('month');
+ // report reviewer
+        $report_reviewer = $this->input->post('report_reviewer');
 
+        if ($report_reviewer != "" && $report_reviewer != null) {
+            $where['sr.report_reviewer_id'] = $report_reviewer;
+        }
         if ($year != "" && $month != "") {
             $where["YEAR(sr.create_on)"] = $year;
             $where["MONTH(sr.create_on)"] = $month;

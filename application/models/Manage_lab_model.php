@@ -30,6 +30,7 @@ class Manage_lab_model extends MY_Model
         WHERE st.sample_test_sample_reg_id = sr.sample_reg_id) AS sample_test_ids,sr.sample_desc,sr.gc_no,CASE WHEN tr.trf_service_type ='Regular' AND  ( tr.service_days IS NULL OR service_days='') THEN CONCAT(tr.trf_service_type,' 3 Days')
         WHEN tr.trf_service_type ='Express' THEN CONCAT(tr.trf_service_type,' 2 Days')
         WHEN tr.trf_service_type ='Urgent'  THEN CONCAT(tr.trf_service_type,' 1 Days')
+        WHEN tr.trf_service_type ='Same Day'  THEN CONCAT(tr.trf_service_type,' 0 Days')
         WHEN tr.service_days IS NOT NULL OR tr.service_days!='' THEN CONCAT(tr.trf_service_type,' ',tr.service_days,'Days') END AS sample_service_type, cc.customer_name as client,tr.trf_ref_no,mst.sample_type_name as product_name,sr.received_date,sr.status as sample_reg_status,sr.due_date,sr.qty_received,(SELECT count(st1.sample_test_id) FROM sample_test st1 where (st1.status = 'In Progress' OR st1.status = 'Record Enter Done' OR st1.status = 'Mark As Completed By Lab') and st1.sample_test_sample_reg_id = sr.sample_reg_id) as test_status, trf_buyer");
         $this->db->join('trf_registration tr', 'tr.trf_id = sr.trf_registration_id', 'left');
         $this->db->join('cust_customers as cc', 'cc.customer_id = tr.trf_applicant', 'left');
@@ -134,6 +135,7 @@ class Manage_lab_model extends MY_Model
             WHEN tr.trf_service_type = 'Regular' AND (tr.service_days IS NULL OR service_days = '') THEN CONCAT(tr.trf_service_type,' 3 Days') 
             WHEN tr.trf_service_type = 'Express' THEN CONCAT(tr.trf_service_type,' 2 Days') 
             WHEN tr.trf_service_type = 'Urgent' THEN CONCAT(tr.trf_service_type,' 1 Days') 
+            WHEN tr.trf_service_type = 'Same Day' THEN CONCAT(tr.trf_service_type,' 0 Days') 
             WHEN tr.service_days IS NOT NULL OR tr.service_days != '' THEN CONCAT(tr.trf_service_type,' ',tr.service_days,'Days') 
         END) AS sample_service_type, cc.customer_name as client, tr.trf_ref_no, mst.sample_type_name as product_name, sr.received_date, sr.status, st.status as sample_test_status, sr.lab_completion_date_time, DATE_FORMAT(due_date,'%d-%m-%Y') as due_date, sr.qty_received, ts.test_name, ts.test_method, sr.seal_no, gr.report_id, gr.manual_report_file, gr.report_num,(select COUNT(st.sample_test_sample_reg_id) from sample_test st where st.sample_test_sample_reg_id = sr.sample_reg_id) as total_record_finding, (select COUNT(str.sample_test_sample_reg_id) from sample_test str where (str.status = 'Completed' or str.status = 'Completed Sample') and (str.sample_test_sample_reg_id = sr.sample_reg_id)) as status_count, sr.sample_registration_branch_id, sr.released_to_client, trf_buyer, sr.revise_count, gr.report_type"); // updated by millan on 20-07-2021
         $this->db->from('sample_registration sr');
@@ -335,6 +337,7 @@ class Manage_lab_model extends MY_Model
 	   CASE WHEN tr.trf_service_type ='Regular' AND  ( tr.service_days IS NULL OR service_days='') THEN CONCAT(tr.trf_service_type,' 3 Days')
        WHEN tr.trf_service_type ='Express' THEN CONCAT(tr.trf_service_type,' 2 Days')
        WHEN tr.trf_service_type ='Urgent'  THEN CONCAT(tr.trf_service_type,' 1 Days')
+       WHEN tr.trf_service_type ='Same Day'  THEN CONCAT(tr.trf_service_type,' 0 Days')
 	   WHEN tr.service_days IS NOT NULL OR tr.service_days!='' THEN CONCAT(tr.trf_service_type,' ',tr.service_days,'Days') END AS sample_service_type, cc.customer_name as client, tr.trf_ref_no, mst.sample_type_name as product_name, sr.received_date, sr.status, st.status as sample_test_status, sr.lab_completion_date_time, due_date, sr.qty_received, ts.test_name, ts.test_method,sr.seal_no, sr.sample_registration_branch_id, buyer.isactive as buyer_active, cc.isactive as customer_active, trf_buyer, ts.test_id");
         $this->db->from('sample_registration sr');
         $this->db->join('sample_test st', 'st.sample_test_sample_reg_id = sr.sample_reg_id', 'left');
@@ -400,6 +403,7 @@ class Manage_lab_model extends MY_Model
 	  CASE WHEN tr.trf_service_type ='Regular' AND  ( tr.service_days IS NULL OR service_days='') THEN CONCAT(tr.trf_service_type,' 3 Days')
        WHEN tr.trf_service_type ='Express' THEN CONCAT(tr.trf_service_type,' 2 Days')
        WHEN tr.trf_service_type ='Urgent'  THEN CONCAT(tr.trf_service_type,' 1 Days')
+       WHEN tr.trf_service_type ='Same Day'  THEN CONCAT(tr.trf_service_type,' 0 Days')
 	   WHEN tr.service_days IS NOT NULL OR tr.service_days!='' THEN CONCAT(tr.trf_service_type,' ',tr.service_days,'Days') END AS sample_service_type,
 	   cc.customer_name as client,tr.trf_ref_no,mst.sample_type_name as product_name,sr.received_date,sr.status,
 	   sr.due_date,sr.qty_received,ts.test_name,ts.test_method,sr.seal_no");
@@ -635,6 +639,7 @@ class Manage_lab_model extends MY_Model
             WHEN tr.trf_service_type ='Regular' AND (tr.service_days IS NULL OR service_days = '') THEN CONCAT(tr.trf_service_type,' 3 Days') 
             WHEN tr.trf_service_type = 'Express' THEN CONCAT(tr.trf_service_type,' 2 Days') 
             WHEN tr.trf_service_type = 'Urgent'  THEN CONCAT(tr.trf_service_type,' 1 Days') 
+            WHEN tr.trf_service_type = 'Same Day'  THEN CONCAT(tr.trf_service_type,' 0 Days') 
             WHEN tr.service_days IS NOT NULL OR tr.service_days != '' THEN CONCAT(tr.trf_service_type,' ',tr.service_days,'Days') 
         END) AS sample_service_type, 
         cc.customer_name as client, tr.trf_ref_no, mst.sample_type_name as product_name, sr.received_date, sr.status, st.status as sample_test_status, sr.lab_completion_date_time, DATE_FORMAT(due_date,'%d-%m-%Y') as due_date, sr.qty_received, ts.test_name, ts.test_method, sr.seal_no, gr.report_id, gr.manual_report_file, gr.report_num, (select COUNT(st.sample_test_sample_reg_id) from sample_test st where st.sample_test_sample_reg_id = sr.sample_reg_id) as total_record_finding, (select COUNT(str.sample_test_sample_reg_id) from sample_test str where (str.status = 'Completed' or str.status = 'Completed Sample') and (str.sample_test_sample_reg_id = sr.sample_reg_id)) as status_count, sr.sample_registration_branch_id, sr.released_to_client, trf_buyer, sr.revise_count, primary_approver_status, secondary_approver_status, gr.gr_revise_flag");

@@ -275,7 +275,7 @@ class User_model extends MY_Model
                 ds.designation_name,p.ap_signing_auth as signing_authority,as.sign_path,p.ap_signing_auth,
                 u.lab_analyst,u.crm_flag,dept.dept_id,dept.dept_name,u.admin_active,dv.division_name,
                 branch.branch_name, 
-                p.stamp_path")  /*ADDED ON 09-08-2021 BY KAPRI*/
+                p.stamp_path,u.report_reviewer") //report reviwer  /*ADDED ON 09-08-2021 BY KAPRI*/
             ->from('admin_users u ')
             ->join('admin_role r ', 'u.id_admin_role=r.id_admin_role ','left')
             ->join('admin_profile p' , 'u.uidnr_admin = p.uidnr_admin ', 'left')
