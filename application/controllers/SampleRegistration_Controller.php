@@ -131,7 +131,7 @@ class SampleRegistration_Controller extends MY_Controller
         echo json_encode($labs);
     }
 
-    public function sample_register_listing($page = 0, $trf = null, $customer_name = null, $product = null, $created_on = null, $ulr_no = null, $gc_number = null, $buyer = null, $status = null, $division = null, $style_no = null, $start_date = null, $end_date = null, $applicant=null,$labtype=null,$startdue=null,$enddue=null,$report_remark=null,$year=null,$month = null) // dashboard
+    public function sample_register_listing($page = 0, $trf = null, $customer_name = null, $product = null, $created_on = null, $ulr_no = null, $gc_number = null, $buyer = null, $status = null, $division = null, $style_no = null, $start_date = null, $end_date = null, $applicant = null, $labtype = null, $startdue = null, $enddue = null, $report_remark = null,$report_review = null, $year = null, $month = null) // dashboard
     {
         //$this->output->enable_profiler(true);
         $checkUser = $this->session->userdata('user_data');
@@ -156,7 +156,7 @@ class SampleRegistration_Controller extends MY_Controller
             $page = 0;
         }
 
-        $total_count = $this->sr->get_registered_sample($per_page, $page, $trf, $customer_name, $product, $created_on, $ulr_no, $gc_number, $buyer, $status, $division, $style_no, $start_date, $end_date, $applicant,$labtype,$startdue,$enddue,$report_remark,$year,$month,$count = true); // dashboard
+        $total_count = $this->sr->get_registered_sample($per_page, $page, $trf, $customer_name, $product, $created_on, $ulr_no, $gc_number, $buyer, $status, $division, $style_no, $start_date, $end_date, $applicant, $labtype, $startdue, $enddue, $report_remark, $report_review, $year, $month, $count = true); // dashboard
         $config['full_tag_open']    = '<div class="pagging text-center"><nav><ul class="pagination">';
         $config['full_tag_close']   = '</ul></nav></div>';
         $config['num_tag_open']     = '<li class="page-item"><span class="page-link">';
@@ -178,10 +178,10 @@ class SampleRegistration_Controller extends MY_Controller
         $config['per_page'] = $per_page;
         $this->pagination->initialize($config);
         $data['pagination'] = $this->pagination->create_links();
-        $data['sample_registered'] = $this->sr->get_registered_sample($per_page, $page, $trf, $customer_name, $product, $created_on, $ulr_no, $gc_number, $buyer, $status, $division, $style_no, $start_date, $end_date, $applicant,$labtype,$startdue,$enddue,$report_remark,$year,$month);//dashboard
+        $data['sample_registered'] = $this->sr->get_registered_sample($per_page, $page, $trf, $customer_name, $product, $created_on, $ulr_no, $gc_number, $buyer, $status, $division, $style_no, $start_date, $end_date, $applicant, $labtype, $startdue, $enddue, $report_remark,$report_review , $year, $month); //dashboard
 
         // AJIT CODE 24-02-2021
-        $this->sr->get_registered_sample(NULL, NULL, $trf, $customer_name, $product, $created_on, $ulr_no, $gc_number, $buyer, $status, $division, $style_no, $start_date, $end_date,$applicant,$labtype,$startdue,$enddue,$report_remark,$year,$month, $count = true); // dashboard
+        $this->sr->get_registered_sample(NULL, NULL, $trf, $customer_name, $product, $created_on, $ulr_no, $gc_number, $buyer, $status, $division, $style_no, $start_date, $end_date, $applicant, $labtype, $startdue, $enddue, $report_remark,$report_review , $year, $month, $count = true); // dashboard
         $this->session->set_userdata('excel_query', $this->db->last_query());
         // END
 
@@ -192,8 +192,9 @@ class SampleRegistration_Controller extends MY_Controller
         }
         $end = (($data['sample_registered']) ? count($data['sample_registered']) : 0) + (($page) ? $page : 0);
         $data['result_count'] = "Showing " . $start . " - " . $end . " of " . $total_count . " Results";
-        // echo "<pre>"; print_r($data['sample_registered']); die;
-        $data['service_type_data'] = $this->trf->get_service_type(); 
+        $data['service_type_data'] = $this->trf->get_service_type();
+        //echo "<pre>"; print_r($data['sample_registered']); die;
+         $data['report_reviewer'] = $this->sr->get_reviewer(); // report reviewer
         $this->load_view('sample_registration/sample-list', $data);
     }
 
@@ -947,8 +948,13 @@ class SampleRegistration_Controller extends MY_Controller
             "create_on" => date('Y-m-d H:i:s'),
             "clone_trf_id" => $trf_id,
             'sales_person'  => $data->sales_person,
+<<<<<<< HEAD
             'trf_package_id' => $data->trf_package_id,
 			'trf_protocol_id' => $$data->trf_protocol_id,
+=======
+            'trf_package_id'  => $data->trf_package_id,
+            'trf_protocol_id'  => $data->trf_protocol_id,
+>>>>>>> e0717f1653b1d54ae5afd266a27513e31b3a102a
         );
 
         $trf_ids = $this->trf->insert_data('trf_registration', $trf_record);
@@ -1133,6 +1139,7 @@ class SampleRegistration_Controller extends MY_Controller
                 $objPHPExcel->getActiveSheet()->setCellValue('R1', "Style Number");
                 $objPHPExcel->getActiveSheet()->setCellValue('S1', "Color");
                 $objPHPExcel->getActiveSheet()->setCellValue('T1', "Invoice Status"); // new change
+                $objPHPExcel->getActiveSheet()->setCellValue('U1', "Report Reviewer Name"); // new change
 
                 $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
                 $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
@@ -1154,6 +1161,7 @@ class SampleRegistration_Controller extends MY_Controller
                 $objPHPExcel->getActiveSheet()->getColumnDimension('R')->setAutoSize(true);
                 $objPHPExcel->getActiveSheet()->getColumnDimension('S')->setAutoSize(true);
                 $objPHPExcel->getActiveSheet()->getColumnDimension('T')->setAutoSize(true); // new change
+                $objPHPExcel->getActiveSheet()->getColumnDimension('U')->setAutoSize(true); // new change
 
                 $i = 2;
                 foreach ($data as $key => $value) {
@@ -1197,6 +1205,7 @@ class SampleRegistration_Controller extends MY_Controller
                     $objPHPExcel->getActiveSheet()->setCellValue('R' . $i, $style_no ? $style_no : '');
                     $objPHPExcel->getActiveSheet()->setCellValue('S' . $i, $color ? $color : '');
                     $objPHPExcel->getActiveSheet()->setCellValue('T' . $i, $value->marked_invoice == '1' ? 'Un-Marked' : 'Marked'); // new change
+                    $objPHPExcel->getActiveSheet()->setCellValue('U' . $i, $value->admin_fname ? $value->admin_fname : ''); // new change
                     $i++;
                 }
 

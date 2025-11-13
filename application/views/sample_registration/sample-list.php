@@ -10,10 +10,11 @@
   $buyer_id = ($this->uri->segment(10)) ? $this->uri->segment(10) : '';
   $division_id = ($this->uri->segment(12)) ? $this->uri->segment(12) : '';
   $invoice = ($this->uri->segment(20)) ? $this->uri->segment(20) : '';
-  $year = ($this->uri->segment(21)) ? $this->uri->segment(21) : '';
-  $month = ($this->uri->segment(22)) ? $this->uri->segment(22) : '';
+  $year = ($this->uri->segment(22)) ? $this->uri->segment(22) : '';
+  $month = ($this->uri->segment(23)) ? $this->uri->segment(23) : '';
   $enddue = ($this->uri->segment(19)) ? $this->uri->segment(19) : '';
   $startdue = ($this->uri->segment(18)) ? $this->uri->segment(18) : '';
+  $report_review = ($this->uri->segment(21)) ? $this->uri->segment(21) : ''; // report review
   $created_on = $this->uri->segment(7);
   if ($created_on != "null") {
     $created_on = base64_decode($created_on);
@@ -254,6 +255,17 @@
                   </select>
                 </div>
               </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <select class="form-control form-control-sm" name="report_reviewer" id="report_reviewer">
+                     <option value="">Select Report Reviewer...</option>
+                    <?php foreach($report_reviewer as $report): ?>
+                    <option value="<?=$report['uidnr_admin']?>" <?php if ($report_review == $report['uidnr_admin']) { echo 'selected'; } ?>><?=$report['admin_fname'].' '.$report['admin_lname']?></option>
+                    <?php endforeach; ?>
+                    
+                  </select>
+                </div>
+              </div>
               <input type="hidden" name="todayoverdue" id="enddue" value="<?= $enddue ?>">
               <input type="hidden" name="alloverdue" id="startdue" value="<?= $startdue ?>">
               <input type="hidden" name="year" id="year" value="<?= $year ?>">
@@ -321,7 +333,7 @@
                         <th>Basil Report No.</th>
                         <th>Barcode</th>
                         <th>TRF Service Type</th><!-- new change -->
-                        <!-- <th>ULR No.</th> -->
+                        <th>Report Reviewer</th>
                         <th>Product</th>
                         <th>TRF Reference No.</th>
                         <th>Customer</th>
@@ -366,8 +378,8 @@
                             <td><?php echo $sno += 1; ?></td>
                             <td><?php echo $sample['gc_no']; ?></td>
                             <td><img src="<?php echo $sample['barcode_path']; ?>"></td>
-                            <td><?php echo $sample['trf_service_type']; ?></td> <!-- new change -->
-                            <!-- <td><?php echo $sample['ulr_no']; ?></td> -->
+                             <td><?php echo $sample['trf_service_type']; ?></td> <!-- new change -->
+                            <td><?php echo $sample['admin_fname']; ?></td>
                             <td><?php echo $sample['sample_type_name']; ?></td>
                             <td><?php echo $sample['trf_ref_no']; ?></td>
                             <td><?php echo $sample['customer'] ? $sample['customer'] : 'N/A'; ?></td>
@@ -1169,6 +1181,18 @@
                   <input type="file" class="form-control" name="manual_report_file">
                 </div>
               </div>
+               <!-- report reviwer -->
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <h6>Report Reviewer:</h6>
+                  <select class="form-control"  name="report_reviewer">
+                    <option value="">Select...</option>
+                    <?php foreach($report_reviewer as $report): ?>
+                    <option value="<?=$report['uidnr_admin']?>"><?=$report['admin_fname'].' '.$report['admin_lname']?></option>
+                    <?php endforeach; ?>
+                  </select>
+                </div>
+              </div>
             </div>
           </div>
           <div class="modal-footer">
@@ -1578,6 +1602,7 @@
       $('#startdue').val('');
       $('#year').val('');
       $('#month').val('');
+      $('#report_reviewer').val(''); // report reviewer
       filter(0);
 
     });
@@ -1698,6 +1723,7 @@
       } else {
         startdue = ($('#startdue').val());
       }
+
       var year = $('#year').val();
       if (year == "") {
         year = null;
@@ -1710,8 +1736,14 @@
       } else {
         month = ($('#month').val());
       }
-
-      window.location.replace(url + 'SampleRegistration_Controller/sample_register_listing/' + page + '/' + trf_number + '/' + customer_name + '/' + product + '/' + created_on + '/' + ulr_no + '/' + gc_number + '/' + buyer + '/' + status + '/' + division + '/' + style_no + '/' + start_date + '/' + end_date + '/' + applicant_name + '/' + null + '/' + startdue + '/' + enddue + '/' + report_remark + '/'+year + '/'+ month ); // dashboard
+       //  report reviewer
+      var report_reviewer = $('#report_reviewer').val();
+      if (report_reviewer == "") {
+        report_reviewer = null;
+      } else {
+        report_reviewer = ($('#report_reviewer').val());
+      }
+      window.location.replace(url + 'SampleRegistration_Controller/sample_register_listing/' + page + '/' + trf_number + '/' + customer_name + '/' + product + '/' + created_on + '/' + ulr_no + '/' + gc_number + '/' + buyer + '/' + status + '/' + division + '/' + style_no + '/' + start_date + '/' + end_date + '/' + applicant_name + '/' + null + '/' + startdue + '/' + enddue + '/' + report_remark  + '/'+report_reviewer + '/'+year + '/'+ month ); // dashboard report review
     }
   </script>
   <script>

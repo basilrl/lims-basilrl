@@ -223,6 +223,7 @@
 
 
                         <td>
+                          <?php if ($res['admin_active'] == 1) {  ?>
                           <?php if (exist_val('Users/Edit_user_submit', $this->session->userdata('permission'))) { ?>
                             <a href="<?php echo base_url() . "Users/edit_admin_users/" . $res['uidnr_admin']; ?>" class="btn btn-sm btn-default"><img src="<?php echo base_url('assets/images/user_edit.png') ?>" title="EDIT USER"></a>
                           <?php } ?>
@@ -236,6 +237,23 @@
                             <?php } else { ?>
 
                               <a class="btn btn-sm" title="UN-MARK LAB ANALYST" href="<?php echo base_url('Users/mark_user?uidnr_admin=' . $res['uidnr_admin']); ?>"><button type="button" class="btn btn-sm btn-success" title="UN-MARK AS LAB ANALYST"><img src="<?php echo base_url('assets/images/assign_lab.png') ?>" alt="un-mark lab analyst"></button></a>
+
+                            <?php } ?>
+
+                          <?php
+                          }
+                          ?>
+                            <!-- Report Reviewer -->
+                          <?php
+                          if (exist_val('Users/mark_user', $this->session->userdata('permission'))) {
+                          ?>
+
+                            <?php if ($res['report_reviewer'] == 0) { ?>
+                              <a class="btn btn-sm" title="MARK REPORT REVIEWER" href="<?php echo base_url('Users/mark_report_user?uidnr_admin=' . $res['uidnr_admin']); ?>"><button type="button" class="btn btn-sm btn-default" title="MARK AS REPORT REVIEWER"><img src="<?php echo base_url('assets/images/report.png') ?>" alt="mark reviewer"></button></a>
+
+                            <?php } else { ?>
+
+                              <a class="btn btn-sm" title="UN-MARK REPORT REVIEWER" href="<?php echo base_url('Users/mark_report_user?uidnr_admin=' . $res['uidnr_admin']); ?>"><button type="button" class="btn btn-sm btn-success" title="UN-MARK AS REPORT REVIEWER"><img src="<?php echo base_url('assets/images/report.png') ?>" alt="un-mark reviewer"></button></a>
 
                             <?php } ?>
 
@@ -258,7 +276,11 @@
                           <?php
                           } ?>
 
-
+ <?php
+                          if (exist_val('Users/get_history', $this->session->userdata('permission'))) {
+                          ?>
+                          <button type="button" class="btn btn-sm btn-default login_history" data-id="<?php echo $res['uidnr_admin'] ?>" data-bs-toggle="modal" data-bs-target="#login_history_popup" title="Login user history"><i class="fas fa-history"></i></button>
+                          <?php } } ?>
                           <?php
                           if (exist_val('Users/mark_user', $this->session->userdata('permission'))) {
                           ?>
@@ -276,11 +298,7 @@
                           <?php
                           } ?>
                           
-                        <?php
-                          if (exist_val('Users/get_history', $this->session->userdata('permission'))) {
-                          ?>
-                          <button type="button" class="btn btn-sm btn-default login_history" data-id="<?php echo $res['uidnr_admin'] ?>" data-bs-toggle="modal" data-bs-target="#login_history_popup" title="Login user history"><i class="fas fa-history"></i></button>
-                          <?php } ?>
+                       
                         </td>
 
                       </tr>
