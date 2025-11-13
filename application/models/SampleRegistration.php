@@ -1428,13 +1428,16 @@ class SampleRegistration extends MY_Model
            $getPackage = $package->result_array();
            $get_package = $getPackage[0]['package_name'];
            } 
+// echo $this->db->last_query();
+//            echo '<pre>';
+//            print_r($getPackage);die;
 // new change
          $protocol = $this->db->where('sample_reg_id', $sample_reg_id)->select('protocol_name')->join('trf_registration tr', 'tr.trf_protocol_id= pac.protocol_id')->join('sample_registration sr', 'sr.trf_registration_id=tr.trf_id')->from('protocols pac')->get();
            if($protocol->num_rows() == 0){
             $get_protocol = '';
            }else{
            $getProtocol = $protocol->result_array();
-           $get_protocol = $getProtocol[0]['package_name'];
+           $get_protocol = $getProtocol[0]['protocol_name'];
            } 
  
 

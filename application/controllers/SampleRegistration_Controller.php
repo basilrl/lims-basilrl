@@ -946,7 +946,9 @@ class SampleRegistration_Controller extends MY_Controller
             "updated_by" => $this->user,
             "create_on" => date('Y-m-d H:i:s'),
             "clone_trf_id" => $trf_id,
-            'sales_person'  => $data->sales_person
+            'sales_person'  => $data->sales_person,
+            'trf_package_id' => $data->trf_package_id,
+			'trf_protocol_id' => $$data->trf_protocol_id,
         );
 
         $trf_ids = $this->trf->insert_data('trf_registration', $trf_record);
